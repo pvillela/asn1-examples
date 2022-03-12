@@ -1,0 +1,155 @@
+MyExample DEFINITIONS ::=
+BEGIN
+
+MyChoice ::= CHOICE {
+   intNot INTEGER,
+   intExp [21] EXPLICIT INTEGER,
+   intImp [22] IMPLICIT INTEGER,
+   boolNot BOOLEAN,
+   boolExp [23] EXPLICIT BOOLEAN,
+   boolImp [24] IMPLICIT BOOLEAN
+}
+
+MySeq ::= SEQUENCE {
+   intNot INTEGER,
+   intExp [1] EXPLICIT INTEGER,
+   intImp [2] IMPLICIT INTEGER,
+   boolNot BOOLEAN,
+   boolExp [3] EXPLICIT BOOLEAN,
+   boolImp [4] IMPLICIT BOOLEAN,
+   choExpDelim UTF8String,
+   choExp [5] EXPLICIT MyChoice,
+   choNot1Delim UTF8String,
+   choNot1 MyChoice,
+   choNot2Delim UTF8String,
+   choNot2 MyChoice,
+   choNot3Delim UTF8String,
+   choNot3 MyChoice
+}
+
+mySeq MySeq ::= {
+   intNot 1,
+   intExp -1,
+   intImp 128,
+   boolNot TRUE,
+   boolExp FALSE,
+   boolImp FALSE,
+   choExpDelim "choExpDelim",
+   choExp intNot: 1,
+   choNot1Delim "choNot1Delim",
+   choNot1 boolExp: FALSE,
+   choNot2Delim "choNot2Delim",
+   choNot2 boolImp: FALSE,
+   choNot3Delim "choNot3Delim",
+   choNot3 boolNot: FALSE
+}
+
+MySet ::= SET {
+   intNot INTEGER,
+   intExp [1] EXPLICIT INTEGER,
+   intImp [2] IMPLICIT INTEGER,
+   boolNot BOOLEAN,
+   boolExp [3] EXPLICIT BOOLEAN,
+   boolImp [4] IMPLICIT BOOLEAN,
+   choExpDelim [5] EXPLICIT UTF8String,
+   choExp [6] EXPLICIT MyChoice,
+   choNotDelim [7] EXPLICIT UTF8String,
+   choNot CHOICE { 
+      intExp [8] EXPLICIT INTEGER,
+      intImp [9] IMPLICIT INTEGER,
+      boolExp [10] EXPLICIT BOOLEAN,
+      boolImp [11] IMPLICIT BOOLEAN
+   }
+}
+
+mySet MySet ::= {
+   intNot 1,
+   intExp -1,
+   intImp 128,
+   boolNot TRUE,
+   boolExp FALSE,
+   boolImp FALSE,
+   choExpDelim "choExpDelim",
+   choExp intNot: 1,
+   choNotDelim "choNotDelim",
+   choNot boolExp: FALSE
+}
+
+MySet1 ::= SET {
+   choExpDelim [5] EXPLICIT UTF8String,
+   choExp [6] EXPLICIT MyChoice,
+   choNotDelim [7] EXPLICIT UTF8String,
+   choNot CHOICE { 
+      intExp [8] EXPLICIT INTEGER,
+      intImp [9] IMPLICIT INTEGER,
+      boolExp [10] EXPLICIT BOOLEAN,
+      boolImp [11] IMPLICIT BOOLEAN
+   },
+   boolNot BOOLEAN,
+   boolExp [3] EXPLICIT BOOLEAN,
+   boolImp [4] IMPLICIT BOOLEAN,
+   intNot INTEGER,
+   intExp [1] EXPLICIT INTEGER,
+   intImp [2] IMPLICIT INTEGER
+}
+
+mySet1 MySet1 ::= {
+   choExpDelim "choExpDelim",
+   choExp intNot: 1,
+   choNotDelim "choNotDelim",
+   choNot boolExp: FALSE,
+   boolNot TRUE,
+   boolExp FALSE,
+   boolImp FALSE,
+   intNot 1,
+   intExp -1,
+   intImp 128
+}
+
+SetWrapper ::= SEQUENCE {
+   setNot MySet
+}
+
+mySetWrapper SetWrapper ::= {
+   setNot mySet
+}
+
+SetWrapper1 ::= SEQUENCE {
+   setNot MySet1
+}
+
+mySetWrapper1 SetWrapper1 ::= {
+   setNot mySet1
+}
+
+Wrapper ::= SEQUENCE {
+   seqNotDelim UTF8String,
+   seqNot MySeq,
+   seqExpDelim UTF8String,
+   seqExp [1] EXPLICIT MySeq,
+   seqImpDelim UTF8String,
+   seqImp [2] IMPLICIT MySeq,
+   setNotDelim UTF8String,
+   setNot MySet,
+   setExpDelim UTF8String,
+   setExp [3] EXPLICIT MySet,
+   setImpDelim UTF8String,
+   setImp [4] IMPLICIT MySet
+}
+
+myWrapper Wrapper ::= {
+   seqNotDelim "seqNotDelim",
+   seqNot mySeq,
+   seqExpDelim "seqExpDelim",
+   seqExp mySeq,
+   seqImpDelim "seqImpDelim",
+   seqImp mySeq,
+   setNotDelim "setNotDelim",
+   setNot mySet,
+   setExpDelim "setExpDelim",
+   setExp mySet,
+   setImpDelim "setImpDelim",
+   setImp mySet
+}
+
+END
